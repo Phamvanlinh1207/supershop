@@ -16,7 +16,8 @@ class CartController extends Controller
     {
         $order = Order::where('user_id', Auth::user()->id)->where('status', 'uncheckout')->first();
         if ($order == null) {
-            $order = Order::create(
+            $order = Order::create
+            (
                 array(
                     'code' => randomOrderCode(),
                     'user_id' => Auth::user()->id,
@@ -55,13 +56,10 @@ class CartController extends Controller
         $voucherList = Voucher::all();
         $order = Order::where('user_id', $user->id)->where('status', config('order.uncheckout'))->first();
         $total = 0;
-
-        dd($order);
-        // foreach ($order->orderDetails as $orderDetail) {
-        //     $total += $orderDetail->product->price * $orderDetail->quantity
-        //     ;
-        // }
-        
+        foreach ($order->orderDetails as $orderDetail) {
+            $total += $orderDetail->product->price * $orderDetail->quantity
+            ;
+        }
         return view('cart', ['order' => $order, 'locationList' => $locationList, 'total' => $total, 'user' => $user, 'voucherList' => $voucherList]);
          
     }

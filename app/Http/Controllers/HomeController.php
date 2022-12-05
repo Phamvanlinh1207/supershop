@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Location;
+use App\Models\Product;
 use App\Services\Category\Actions\ShowCategoryAction;
 use App\Services\Product\Actions\ShowProductAction;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -19,10 +20,8 @@ class HomeController extends Controller
     public function index()
     {
         $productList = resolve(ShowProductAction::class)->run();
-        
         $categoryList = resolve(ShowCategoryAction::class)->run();
         return view("home", array("productList" => $productList, "categoryList" => $categoryList));
-       
     }
 
     public function productDetail($slug)
@@ -30,7 +29,6 @@ class HomeController extends Controller
         $product = resolve(ShowProductAction::class)->getProductBySlug($slug);
         $productList = resolve(ShowProductAction::class)->run();
         $categoryList = resolve(ShowCategoryAction::class)->run();
-
 
         return view("product_detail", array(
             "product" => $product,

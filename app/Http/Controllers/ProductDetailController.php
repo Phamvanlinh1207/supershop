@@ -11,7 +11,6 @@ class ProductDetailController extends Controller
     public function addToCart(Request $request)
     {
         $order = Order::where('user_id', Auth::user()->id)->where('status', 'pending')->first();
-        dd($order);
         if($order == null) {
             $order = Order::create(
                 array(
@@ -20,6 +19,7 @@ class ProductDetailController extends Controller
                     'status' => 'pending'
                 )
             );
+
         }
 
         $orderDetail = $order->orderDetails()->where('product_id', $request->input('product_id'))->first();
